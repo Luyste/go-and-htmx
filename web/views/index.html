@@ -12,36 +12,10 @@
     </script>
   </head>
   <body>
-    <div id="form-input">
-      {{ template "form-input" .FormData }}
-    </div>
-    <hr />
-    <div id="form-display" style="display: flex; flex-direction: column">
-      {{ template "form-display" .PageData }}
-    </div>
+          <div id="counter"> {{ template "Counter" . }} </div>
+          <button hx-post="/increment", hx-target="#counter">Add to count</button>
   </body>
 </html>
 {{ end }} 
 
-{{ block "form-input" . }}
-<form hx-post="/save-contact" hx-swap="outerHTML"> 
-  <input 
-        {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
-        type="text" name="name" 
-  />
-  <input 
-        {{ if .Values.email }} value="{{ .Values.email}}" {{ end }}
-        type="email" name="email" 
-  />
-  <button type="submit">Save Contact</button>
-  {{ if .Errors.email }} 
-  <h4 style="color: red">{{ .Errors.email }}</h4>
-  {{ end }}
-</form>
-{{ end }} 
 
-{{ block "form-display" .PageData }} 
-{{ range .Contacts }} 
-<span>name: {{ .Name }}, email: {{ .Email }}</span>
-{{ end }} 
-{{ end }}

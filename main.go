@@ -1,7 +1,8 @@
 package main
 
 import (
-	u "go-and-htmx/internal/handlers"
+	"go-and-htmx/internal/app"
+	"go-and-htmx/internal/handlers"
 	"go-and-htmx/tools"
 
 	"github.com/labstack/echo/v4"
@@ -15,24 +16,7 @@ func main() {
 	// initialize middleware
 	e.Use(middleware.Logger())
 
-	// seed to see some data
-	contacts := u.ContactList{
-		u.NewContact("Jop", "Jop@gmail.com"),
-		u.NewContact("Kevin", "Kevin@gmail.com"),
-	}
-
-	pageData := u.Contacts{
-		Contacts: contacts,
-	}
-	formData := u.FormData{}
-
-	ctx := u.Context{
-		// Data to render the page
-		PageData: pageData,
-
-		// Data to render the form
-		FormData: formData,
-	}
+	ctx := app.Context{Counter: 0}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -44,8 +28,8 @@ func main() {
 	e.Renderer = render.NewTemplate()
 
 	// routers
-	e.GET("/", u.Home)
-	e.POST("/save-contact", u.SaveContact)
+	e.GET("/", handlers.Index)
+	e.POST("/increment", handlers.Increment)
 
 	// start server
 	e.Logger.Fatal(e.Start("localhost:42069"))
