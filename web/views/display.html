@@ -1,0 +1,5 @@
+{{ block "Display" . }}
+        {{ range .DisplayData }}
+                <span>name: {{ .Name }} ,email: {{ .Email }}</span>
+        {{ end }}
+{{ end }}

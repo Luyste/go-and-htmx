@@ -12,10 +12,22 @@
     </script>
   </head>
   <body>
-          <div id="counter"> {{ template "Counter" . }} </div>
-          <button hx-post="/increment", hx-target="#counter">Add to count</button>
+        <div>
+                <div id="counter"> {{ template "Counter" . }} </div>
+                <button hx-post="/increment" hx-target="#counter">Add to count</button>
+        </div>
+        <hr />
+        <div>
+                <div id="form"> 
+                        {{ template "Form" . }} 
+                </div>
+        </div>
+        <hr />
+        <div>
+                <div id="display" style="display: flex; flex-direction: column"> 
+                        {{ template "Display" . }} 
+                </div>
+        </div>
   </body>
 </html>
 {{ end }} 
-
-

@@ -1,0 +1,11 @@
+{{ block "Form" . }}
+        <form hx-post="/add" hx-target="#display">
+                <input 
+                        type="text" name="name" 
+                />
+                <input 
+                        type="email" name="email" 
+                />
+                <button type="submit">Add Contact</button>
+        </form>
+{{ end }}

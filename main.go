@@ -10,13 +10,19 @@ import (
 )
 
 func main() {
-	// initiate echo
 	e := echo.New()
 
-	// initialize middleware
 	e.Use(middleware.Logger())
 
-	ctx := app.Context{Counter: 0}
+	// my applications state is captured in the app.Context struct. This holds all relevant information
+	ctx := app.Context{
+		FormData: app.NewFormData(),
+		DisplayData: app.DisplayData{
+			app.NewContact("Jop", "jop@email.com"),
+			app.NewContact("kevin", "kevin@email.com"),
+		},
+		Counter: 0,
+	}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -27,10 +33,9 @@ func main() {
 
 	e.Renderer = render.NewTemplate()
 
-	// routers
 	e.GET("/", handlers.Index)
+	e.POST("/add", handlers.Add)
 	e.POST("/increment", handlers.Increment)
 
-	// start server
 	e.Logger.Fatal(e.Start("localhost:42069"))
 }
