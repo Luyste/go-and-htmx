@@ -1,7 +1,7 @@
 package main
 
 import (
-	h "go-and-htmx/internal/handlers"
+	u "go-and-htmx/internal/handlers"
 	"go-and-htmx/tools"
 
 	"github.com/labstack/echo/v4"
@@ -15,25 +15,27 @@ func main() {
 	// initialize middleware
 	e.Use(middleware.Logger())
 
-	// Set counter as 0 and let middleware add it to context
-	count := h.Count{Counter: 0}
-	contacts := h.ContactList{
-		h.NewContact("Jop", "Jop@gmail.com"),
-		h.NewContact("Kevin", "Kevin@gmail.com"),
+	// seed to see some data
+	contacts := u.ContactList{
+		u.NewContact("Jop", "Jop@gmail.com"),
+		u.NewContact("Kevin", "Kevin@gmail.com"),
 	}
-	ctx := h.Context{
-		Count:    count,
+
+	pageData := u.Contacts{
 		Contacts: contacts,
+	}
+	formData := u.FormData{}
+
+	ctx := u.Context{
+		// Data to render the page
+		PageData: pageData,
+
+		// Data to render the form
+		FormData: formData,
 	}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			// Since we're now passing more data, we need a way to:
-			// 1. Send everything in one go, but also be able to substract
-			// necessary information from dataset.
-			// create a map of key/value pairs which hold references to the
-			// structs.
-
 			c.Set("data", &ctx)
 			return next(c)
 		}
@@ -42,10 +44,9 @@ func main() {
 	e.Renderer = render.NewTemplate()
 
 	// routers
-	e.GET("/", h.Welcome)
-	e.POST("/increment", h.Increment)
-	e.POST("/save-contact", h.SaveContact)
+	e.GET("/", u.Home)
+	e.POST("/save-contact", u.SaveContact)
 
 	// start server
-	e.Logger.Fatal(e.Start(":42069"))
+	e.Logger.Fatal(e.Start("localhost:42069"))
 }
