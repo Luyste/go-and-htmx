@@ -12,10 +12,14 @@ type Contact struct {
 
 type DisplayData = []Contact
 
+type Counter struct {
+	Count int
+}
+
 type Context struct {
 	FormData    FormData
 	DisplayData DisplayData
-	Counter     int
+	Counter     Counter
 }
 
 // helper functions to seed objects
