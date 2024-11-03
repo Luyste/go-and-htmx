@@ -18,8 +18,10 @@ func main() {
 	ctx := app.Context{
 		FormData: app.NewFormData(),
 		DisplayData: app.DisplayData{
-			app.NewContact("Jop", "jop@email.com"),
-			app.NewContact("kevin", "kevin@email.com"),
+			Contacts: []app.Contact{
+				app.NewContact("Jop", "jop@email.com"),
+				app.NewContact("kevin", "kevin@email.com"),
+			},
 		},
 		Counter: 0,
 	}

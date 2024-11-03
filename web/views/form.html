@@ -1,14 +1,14 @@
 {{ block "Form" . }}
         <form hx-post="/add" hx-swap="outerHTML">
-                {{ if .FormData.Errors.email }} 
-                <p style="color: red">{{ .FormData.Errors.email }}</p>
+                {{ if .Errors.email }} 
+                <p style="color: red">{{ .Errors.email }}</p>
                 {{ end }}
                 <input 
-                        {{ if .FormData.Values.name }} value="{{ .FormData.Values.name }}" {{ end }}
+                        {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
                         type="text" name="name" 
                 />
                 <input 
-                        {{ if .FormData.Values.email}} value="{{ .FormData.Values.email}}" {{ end }}
+                        {{ if .Values.email}} value="{{ .Values.email}}" {{ end }}
                         type="email" name="email" 
                 />
                 <button type="submit">Add Contact</button>

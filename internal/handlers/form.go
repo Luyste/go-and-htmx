@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"fmt"
 	"go-and-htmx/internal/app"
+	"reflect"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -36,10 +39,17 @@ func Add(c echo.Context) error {
 
 		// TODO: How do we render "Display" without hx-target="#display"????
 		// TODO: How do we render "Form" without hx-target="this"????
+
+		fmt.Printf(">>>> old email detected <<<<")
+		fmt.Printf(">>>> ectx %+v\n", ectx)
 		return c.Render(200, "Form", ectx)
 	}
+	// it looks like the 500 error is because of a data race.
 	// if email is not yet present, add it.
+	ctx.DisplayData.Contacts = append(ctx.DisplayData.Contacts, app.NewContact(name, email))
+	fmt.Printf(">>>> typeof ctx: %+v\n", reflect.TypeOf(ctx))
+	fmt.Printf(">>>> ctx: %+v\n", ctx)
 
-	ctx.DisplayData = append(ctx.DisplayData, app.NewContact(name, email))
-	return c.Render(200, "Display", ctx)
+	time.Sleep(time.Duration(100 * time.Millisecond))
+	return c.Render(200, "Display", ctx.DisplayData)
 }

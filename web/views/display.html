@@ -1,5 +1,5 @@
 {{ block "Display" . }}
-        {{ range .DisplayData }}
+        {{ range .Contacts }}
                 <span>name: {{ .Name }} ,email: {{ .Email }}</span>
         {{ end }}
 {{ end }}

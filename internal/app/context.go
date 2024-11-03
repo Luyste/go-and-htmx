@@ -10,16 +10,14 @@ type Contact struct {
 	Email string
 }
 
-type DisplayData = []Contact
-
-type Counter struct {
-	Count int
+type DisplayData struct {
+	Contacts []Contact
 }
 
 type Context struct {
 	FormData    FormData
 	DisplayData DisplayData
-	Counter     Counter
+	Counter     int
 }
 
 // helper functions to seed objects
@@ -39,7 +37,7 @@ func NewContact(name, email string) Contact {
 }
 
 func (ctx Context) HasEmail(email string) bool {
-	for _, contact := range ctx.DisplayData {
+	for _, contact := range ctx.DisplayData.Contacts {
 		if contact.Email == email {
 			return true
 		}
