@@ -1,4 +1,4 @@
-{{ block "Display" . }}
+{{ define "Display" }}
         {{ range .Contacts }}
                 <span>name: {{ .Name }} ,email: {{ .Email }}</span>
         {{ end }}

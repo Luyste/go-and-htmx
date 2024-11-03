@@ -23,7 +23,9 @@ func main() {
 				app.NewContact("kevin", "kevin@email.com"),
 			},
 		},
-		Counter: 0,
+		Counter: app.Counter{
+			Count: 0,
+		},
 	}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {

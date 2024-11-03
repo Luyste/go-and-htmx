@@ -13,7 +13,7 @@
   </head>
   <body>
         <div>
-                <div id="counter"> {{ template "Counter" . }} </div>
+                <div id="counter"> {{ template "Counter" .Counter }} </div>
                 <button hx-post="/increment" hx-target="#counter">Add to count</button>
         </div>
         <hr />
@@ -26,7 +26,6 @@
         <div>
                 <div id="display" style="display: flex; flex-direction: column"> 
                         {{ template "Display" .DisplayData }} 
-                        {{ printf "%+v" . }}
                 </div>
         </div>
   </body>

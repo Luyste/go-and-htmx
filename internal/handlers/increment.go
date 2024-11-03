@@ -8,7 +8,7 @@ import (
 
 func Increment(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
-	ctx.Counter++
+	ctx.Counter.Count++
 
-	return c.Render(200, "Counter", ctx)
+	return c.Render(200, "Counter", ctx.Counter)
 }

@@ -2,11 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"go-and-htmx/internal/app"
-	"reflect"
-	"time"
-
 	"github.com/labstack/echo/v4"
+	"go-and-htmx/internal/app"
 )
 
 func Add(c echo.Context) error {
@@ -25,10 +22,10 @@ func Add(c echo.Context) error {
 		// Note that we don't want to store this error in the state of the app, therefore
 		// create a copy of context.
 
-		ectx := *ctx
-		ectx.FormData.Values["name"] = name
-		ectx.FormData.Values["email"] = email
-		ectx.FormData.Errors["email"] = "This email already exists!"
+		fd := app.NewFormData()
+		fd.Values["name"] = name
+		fd.Values["email"] = email
+		fd.Errors["email"] = "This email already exists!"
 
 		// cheat our way, return 200 because 400 - 500 are not rendered by hmtx default
 		// also we now only want to render the form, not the display
@@ -41,15 +38,11 @@ func Add(c echo.Context) error {
 		// TODO: How do we render "Form" without hx-target="this"????
 
 		fmt.Printf(">>>> old email detected <<<<")
-		fmt.Printf(">>>> ectx %+v\n", ectx)
-		return c.Render(200, "Form", ectx)
+		fmt.Printf(">>>> ectx %+v\n", fd)
+		return c.Render(200, "Form", fd)
 	}
 	// it looks like the 500 error is because of a data race.
 	// if email is not yet present, add it.
 	ctx.DisplayData.Contacts = append(ctx.DisplayData.Contacts, app.NewContact(name, email))
-	fmt.Printf(">>>> typeof ctx: %+v\n", reflect.TypeOf(ctx))
-	fmt.Printf(">>>> ctx: %+v\n", ctx)
-
-	time.Sleep(time.Duration(100 * time.Millisecond))
 	return c.Render(200, "Display", ctx.DisplayData)
 }

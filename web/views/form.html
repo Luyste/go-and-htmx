@@ -1,4 +1,4 @@
-{{ block "Form" . }}
+{{ define "Form" }}
         <form hx-post="/add" hx-swap="outerHTML">
                 {{ if .Errors.email }} 
                 <p style="color: red">{{ .Errors.email }}</p>
