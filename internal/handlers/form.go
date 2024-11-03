@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"go-and-htmx/internal/app"
 )
@@ -12,15 +11,8 @@ func Add(c echo.Context) error {
 	name := c.FormValue("name")
 	email := c.FormValue("email")
 
-	// now lets build in some validation and error codes.
 	if ctx.HasEmail(email) {
-		//If email exist, we want to show an error message that email already exists
-		// For this, we're going to render the form input fields with provided input
-		// + an error message.
-
-		// Lets use the FormData struct
-		// Note that we don't want to store this error in the state of the app, therefore
-		// create a copy of context.
+		// TODO: Set correct error code!
 
 		fd := app.NewFormData()
 		fd.Values["name"] = name
@@ -37,8 +29,6 @@ func Add(c echo.Context) error {
 		// TODO: How do we render "Display" without hx-target="#display"????
 		// TODO: How do we render "Form" without hx-target="this"????
 
-		fmt.Printf(">>>> old email detected <<<<")
-		fmt.Printf(">>>> ectx %+v\n", fd)
 		return c.Render(200, "Form", fd)
 	}
 	// it looks like the 500 error is because of a data race.

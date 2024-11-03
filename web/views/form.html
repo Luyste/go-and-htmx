@@ -1,8 +1,8 @@
 {{ define "Form" }}
-        <form hx-post="/add" hx-swap="outerHTML">
-                {{ if .Errors.email }} 
-                <p style="color: red">{{ .Errors.email }}</p>
-                {{ end }}
+<form hx-post="/add" 
+      {{ if .Errors.email }} hx-swap="outerHTML" hx-target="this" {{ else }} hx-swap="innerHTML" hx-target="#display" {{ end }}
+>
+                {{ if .Errors.email }} <p style="color: red">{{ .Errors.email }}</p> {{ end }}
                 <input 
                         {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
                         type="text" name="name" 
