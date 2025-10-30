@@ -1,0 +1,31 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+
+.navbar {
+    width: 100%;
+    background-color: $primary-color;
+    border: 1px solid #000000;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    &__link {
+        font-size: 1rem;
+        text-decoration: none;
+        margin-right: 1rem;
+
+        &:hover {
+            color: red;
+        }
+    }
+}
