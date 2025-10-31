@@ -3,7 +3,7 @@ package main
 import (
 	"go-and-htmx/internal/app"
 	"go-and-htmx/internal/handlers"
-	render "go-and-htmx/tools"
+	"go-and-htmx/internal/render"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -28,11 +28,18 @@ func main() {
 	// render stylesheets
 	e.Static("/static", "web/static")
 
-	e.Renderer = render.NewTemplate()
+	templates, err := render.LoadTemplates()
+	if err != nil {
+		e.Logger.Fatal(err)
+	}
+
+	e.Renderer = templates
 
 	// routers
 	e.GET("/", handlers.Index)
 	e.GET("/blog", handlers.Blog)
+	e.GET("/form", handlers.Form)
+
 	e.POST("/increment", handlers.Increment)
 
 	// start server

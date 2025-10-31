@@ -6,8 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Blog(c echo.Context) error {
+func Form(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-	return c.Render(200, "blog/index", ctx)
+	return c.Render(200, "form/index", ctx)
 }

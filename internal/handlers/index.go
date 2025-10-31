@@ -8,5 +8,7 @@ import (
 
 func Index(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
-	return c.Render(200, "base", ctx)
+
+	// this is the base layout compiled with all components and route specific index template
+	return c.Render(200, "index", ctx)
 }
