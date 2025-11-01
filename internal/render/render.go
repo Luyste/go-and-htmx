@@ -26,12 +26,12 @@ func LoadTemplates() (*Template, error) {
 	pages := make(map[string]*template.Template)
 	routes := make(map[string]*template.Template)
 
-	homeFilePath, _ := filepath.Glob("web/routes/index.html")
+	homeFilePath, _ := filepath.Glob("web/routes/*.html")
 	routeFilePaths, _ := filepath.Glob("web/routes/**/*.html")
 
 	routeFiles := append(homeFilePath, routeFilePaths...)
 
-	// build page and route templates
+	// build templates
 	for _, filePath := range routeFiles {
 
 		// clone base layout templates for page templates
