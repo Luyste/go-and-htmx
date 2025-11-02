@@ -35,11 +35,25 @@ func main() {
 
 	e.Renderer = templates
 
-	// routers
-	e.GET("/", handlers.Index)
-	e.GET("/blog", handlers.Blog)
-	e.GET("/form", handlers.Form)
+	// routes
+	home := e.Group("/")
+	blog := e.Group("/blog")
+	form := e.Group("/form")
 
+	homeFragments := home.Group("/f")
+	blogFragments := blog.Group("/f")
+	formFragments := home.Group("/f")
+
+	blog.Add("GET", "", handlers.Route)
+	blogFragments.Add("GET", "", handlers.Fragment)
+
+	home.Add("GET", "", handlers.Route)
+	homeFragments.Add("GET", "", handlers.Fragment)
+
+	form.Add("GET", "", handlers.Route)
+	formFragments.Add("GET", "", handlers.Fragment)
+
+	//
 	e.POST("/increment", handlers.Increment)
 
 	// start server
