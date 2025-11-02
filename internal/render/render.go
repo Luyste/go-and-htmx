@@ -12,19 +12,18 @@ import (
 )
 
 type Template struct {
-	pages      map[string]*template.Template
-	components *template.Template
-	routes     map[string]*template.Template
+	templates map[string]*template.Template
 }
 
 func LoadTemplates() (*Template, error) {
 	// load layouts and components into template tree
-	layouts := template.Must(template.ParseGlob("web/layouts/*.html"))
-	components := template.Must(template.ParseGlob("web/components/*.html"))
+	rootLayout := template.Must(template.ParseGlob("web/layout.html"))
+	rootPage := template.Must(template.ParseGlob("web/index.html"))
+	routePages := template.Must(template.ParseGlob("web/routes/*/index.html"))
 
-	// init pages [route]/template map
-	pages := make(map[string]*template.Template)
-	routes := make(map[string]*template.Template)
+	// write recursive tree walker
+	routeFragments := template.Must(template.ParseGlob("web/routes/*/!{index, layout}.html"))
+	components := template.Must(template.ParseGlob("web/components/*.html"))
 
 	homeFilePath, _ := filepath.Glob("web/routes/*.html")
 	routeFilePaths, _ := filepath.Glob("web/routes/**/*.html")
@@ -32,15 +31,20 @@ func LoadTemplates() (*Template, error) {
 	routeFiles := append(homeFilePath, routeFilePaths...)
 
 	// build templates
+
+	// we are going to build two sets of templates which we will store in one big map.
+	// 1. Full Page templates: page, blog/page, form/page
+	// 2. Page content templates: index, blog/index, form/index
+	// 2. Route Fragment templates: {fragmentName}, blog/{fragmentName}, form/{fragmentName}
 	for _, filePath := range routeFiles {
 
 		// clone base layout templates for page templates
-		pageTmpl, err := layouts.Clone()
+		pageTmpl, err := rootLayout.Clone()
 		if err != nil {
 			return nil, err
 		}
 
-		// create new Templates for route templates
+		// create new Templates for each route: [/blog], [/form], [/]
 		routeTmpl := template.New(filepath.Base(filePath))
 
 		// merge component template tree to page/ route tree
@@ -70,15 +74,10 @@ func LoadTemplates() (*Template, error) {
 		// store route template clone in map under route path name (blog/blog)
 		routePath := strings.TrimPrefix(filePath, "web/routes/")
 		routePath = routePath[:len(routePath)-len(filepath.Ext(routePath))]
-
-		pages[routePath] = pageTmpl
-		routes[routePath] = routeTmpl
 	}
 
 	return &Template{
-		pages:      pages,
-		components: components,
-		routes:     routes,
+		templates: nil,
 	}, nil
 }
 
@@ -87,59 +86,17 @@ func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) er
 		return fmt.Errorf("render: templates not initialized")
 	}
 
-	if c.Request().Header.Get("HX-Request") == "true" {
-		return t.renderRouteFragment(w, name, data)
-	}
-
-	return t.renderPage(w, name, data)
-}
-
-func (t *Template) renderRouteFragment(w io.Writer, name string, data any) error {
-	if t == nil {
-		return fmt.Errorf("render: templates not initialized")
-	}
-
-	routeKey := name
-
-	tmpl, ok := t.routes[routeKey]
+	tmpl, ok := t.templates[name]
 	if !ok || tmpl == nil {
-		return fmt.Errorf("render: route template %q not found (available: %v)", routeKey, t.ListRouteRoutes())
+		return fmt.Errorf("render: route template %q not found (available: %v)", name, t.ListTemplates())
 	}
 
 	return tmpl.ExecuteTemplate(w, name, data)
 }
 
-func (t *Template) renderPage(w io.Writer, name string, data any) error {
-	if t == nil {
-		return fmt.Errorf("render: templates not initialized")
-	}
-
-	routeKey := name
-
-	tmpl, ok := t.pages[routeKey]
-	if !ok || tmpl == nil {
-		return fmt.Errorf("render: route template %q not found (available: %v)", routeKey, t.ListPageRoutes())
-	}
-
-	if tmpl.Lookup("base") == nil {
-		return fmt.Errorf("render: base template not found for route %q", routeKey)
-	}
-
-	return tmpl.ExecuteTemplate(w, "base", data)
-}
-
-func (t *Template) ListRouteRoutes() []string {
-	keys := make([]string, 0, len(t.routes))
-	for k := range t.routes {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	return keys
-}
-
-func (t *Template) ListPageRoutes() []string {
-	keys := make([]string, 0, len(t.routes))
-	for k := range t.pages {
+func (t *Template) ListTemplates() []string {
+	keys := make([]string, 0, len(t.templates))
+	for k := range t.templates {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)

@@ -46,6 +46,19 @@ File conventions: (Inspired by Next.js App Router)
 
 - A base layout file: `layout.html` must be created at the root of the `/routes/` directory. This layout file holds the common elements of a html site layout. It is used as a base layout for all pages. This base layout file holds an "index" template block, which is used to render the content of the page.
 
-In turn, each route has its own `index.html` file, which holds the page specific content (including home).
+- A main `index.html`, which holds the page content, wrapped in a "index" template block.
 
-Since components are reusable pieces of HTML that can be used across multiple pages, they are not defined on a specific route but rather in a seperate `/components` directory.
+- Since components are reusable pieces of HTML that can be used across multiple pages, they are not defined on a specific route but rather in a seperate `/components` directory.
+
+# Template building.
+
+To support route based page rendering, the templates are built and stored in an key/value map named `templates`. An advantage of this is that we will be able to directly render a full page when someone directly hits the `/blog` route.
+
+For example:
+
+- Page content (fragment) will be stored as: `index`.
+- The `/blog` page content will be stored as: `blog/index`.
+- The full `/blog` page will be stored as: `blog/page`
+- Fragments, which are because of the convention coupled to the page route, are stored as: `blog/{fragmentName}`.
+
+When we navigate via a hx-swap or get request, we only need to render a certain fragment.
