@@ -1,4 +1,4 @@
-{{ define "base" }}
+{{ define "layout_home" }}
 <!doctype html>
 <html lang="en">
     <head>
@@ -13,8 +13,9 @@
         <link rel="stylesheet" href="/static/css/index.css" />
     </head>
     <body>
-        {{ template "navbar" . }}
-        <main id="main">{{ template "content" . }}</main>
+        {{ template "component_navbar" . }}
+        <main id="main" hx-boost="true">{{ template "content_home" . }}</main>
+        {{ template "component_footer" . }}
     </body>
 </html>
 {{ end }}

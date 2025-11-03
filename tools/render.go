@@ -8,7 +8,8 @@ import (
 )
 
 type Template struct {
-	templates *template.Template
+	templates      *template.Template
+	routeTemplates map[string]*template.Template
 }
 
 func NewTemplate() *Template {

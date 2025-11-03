@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 
 	// initialize middleware
 	e.Use(middleware.Logger())
+	e.Logger.SetLevel(log.DEBUG)
 
 	ctx := app.Context{Counter: 0}
 
@@ -30,9 +32,14 @@ func main() {
 
 	e.Renderer = render.NewTemplate()
 
-	// routers
-	e.GET("/", handlers.Index)
+	// fragments
+	e.GET("/fragments:name", handlers.Fragment)
+
+	// routes
+	e.GET("/", handlers.Home)
 	e.GET("/blog", handlers.Blog)
+
+	// api
 	e.POST("/increment", handlers.Increment)
 
 	// start server

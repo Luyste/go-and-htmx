@@ -1,4 +1,4 @@
-{{ define "navbar" }}
+{{ define "component_navbar" }}
 <nav class="navbar">
     <div class="navbar__container">
         <div class="navbar__title">My First HTMX + Go app</div>
@@ -8,7 +8,7 @@
             hx-get="/"
             hx-swap="innerHTML"
             hx-target="#main"
-            hx-push-url="true"
+            hx-push-url="/"
             >home</a
         >
         <a
@@ -17,7 +17,7 @@
             hx-get="/blog"
             hx-swap="innerHTML"
             hx-target="#main"
-            hx-push-url="true"
+            hx-push-url="/blog"
             >blog</a
         >
     </div>

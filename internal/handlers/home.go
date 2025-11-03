@@ -7,11 +7,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Blog(c echo.Context) error {
+func Home(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
 	if utils.IsHTMX(c) {
-		return c.Render(200, "content_blog", ctx)
+		return c.Render(200, "content_home", ctx)
 	}
-	return c.Render(200, "layout_blog", ctx)
+
+	return c.Render(200, "layout_home", ctx)
 }
