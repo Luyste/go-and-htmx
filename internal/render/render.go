@@ -17,8 +17,8 @@ type Template struct {
 
 func LoadTemplates() (*Template, error) {
 	// load layouts and components into template tree
-	rootLayout := template.Must(template.ParseGlob("web/layout.html"))
-	// rootPage := template.Must(template.ParseGlob("web/index.html"))
+	rootLayout := template.Must(template.ParseFiles("web/routes/layout.html"))
+	// rootPage := template.Must(template.ParseGlob("web/routes/index.html"))
 	// routePages := template.Must(template.ParseGlob("web/routes/*/index.html"))
 
 	// write recursive tree walker
@@ -51,7 +51,7 @@ func LoadTemplates() (*Template, error) {
 		}
 
 		// create new Templates for each route: [/blog], [/form], [/]
-		indexTmpl := template.New(filepath.Base(filePath))
+		// indexTmpl := template.New(filepath.Base(filePath))
 
 		// merge component template tree to page/ route tree
 		for _, ct := range components.Templates() {
@@ -61,9 +61,9 @@ func LoadTemplates() (*Template, error) {
 			}
 
 			// should be more refined, to only add parse tree on components which actually require it
-			if _, err := indexTmpl.AddParseTree(ct.Name(), ct.Tree); err != nil {
-				return nil, err
-			}
+			// if _, err := indexTmpl.AddParseTree(ct.Name(), ct.Tree); err != nil {
+			// 	return nil, err
+			// }
 		}
 
 		// parse route specific file into merged layout/component tree
@@ -72,18 +72,18 @@ func LoadTemplates() (*Template, error) {
 		}
 
 		// build and parse route templates
-		indexTmpl, err = indexTmpl.ParseFiles(filePath)
-		if err != nil {
-			return nil, err
-		}
+		// indexTmpl, err = indexTmpl.ParseFiles(filePath)
+		// if err != nil {
+		// 	return nil, err
+		// }
 
 		// store route template clone in map under route path name (blog/blog)
 		routePath := strings.TrimPrefix(filePath, "web/routes/")
-		routePath = routePath[:len(routePath)-len(filepath.Ext(routePath))]
+		routePath = routePath[:len(routePath)-(len(filepath.Base(routePath)))]
 
 		// store templates under dynamic keys built from routePath
-		pageMap[routePath+"/page"] = pageTmpl
-		indexMap[routePath+"/index"] = indexTmpl
+		pageMap[routePath+"page"] = pageTmpl
+		// indexMap[routePath+"/index"] = indexTmpl
 	}
 
 	templates := make(map[string]*template.Template, len(pageMap)+len(indexMap))
@@ -100,15 +100,23 @@ func LoadTemplates() (*Template, error) {
 }
 
 func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) error {
+	logger := c.Logger()
+
 	if t == nil {
-		return fmt.Errorf("render: templates not initialized")
+		return fmt.Errorf("render: templates not initialized\n")
 	}
 
-	fmt.Printf("available templates: %v", t.ListTemplates())
+	logger.Debugf("available templates: %v\n", t.ListTemplates())
 
 	tmpl, ok := t.templates[name]
+	logger.Debugf("selected template: %v\n", tmpl.Name())
+
+	for _, t := range tmpl.Templates() {
+		logger.Debugf("template templates: %v\n", t.Name())
+	}
+
 	if !ok || tmpl == nil {
-		return fmt.Errorf("render: route template %q not found (available: %v)", name, t.ListTemplates())
+		return fmt.Errorf("render: route template %q not found (available: %v)\n", name, t.ListTemplates())
 	}
 
 	return tmpl.ExecuteTemplate(w, name, data)

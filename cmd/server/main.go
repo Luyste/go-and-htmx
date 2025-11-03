@@ -5,8 +5,11 @@ import (
 	"go-and-htmx/internal/handlers"
 	"go-and-htmx/internal/render"
 
+	customMiddleware "go-and-htmx/internal/middleware"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 func main() {
@@ -15,6 +18,7 @@ func main() {
 
 	// initialize middleware
 	e.Use(middleware.Logger())
+	e.Logger.SetLevel(log.DEBUG)
 
 	ctx := app.Context{Counter: 0}
 
@@ -40,18 +44,22 @@ func main() {
 	blog := e.Group("/blog")
 	form := e.Group("/form")
 
+	home.Use(customMiddleware.BuildTemplateName)
+	blog.Use(customMiddleware.BuildTemplateName)
+	form.Use(customMiddleware.BuildTemplateName)
+
 	homeFragments := home.Group("/f")
 	blogFragments := blog.Group("/f")
 	formFragments := home.Group("/f")
 
-	blog.Add("GET", "", handlers.Route)
-	blogFragments.Add("GET", "", handlers.Fragment)
+	home.GET("", handlers.Route)
+	homeFragments.GET("", handlers.Fragment)
 
-	home.Add("GET", "", handlers.Route)
-	homeFragments.Add("GET", "", handlers.Fragment)
+	blog.GET("", handlers.Route)
+	blogFragments.GET("", handlers.Fragment)
 
-	form.Add("GET", "", handlers.Route)
-	formFragments.Add("GET", "", handlers.Fragment)
+	form.GET("", handlers.Route)
+	formFragments.GET("", handlers.Fragment)
 
 	//
 	e.POST("/increment", handlers.Increment)

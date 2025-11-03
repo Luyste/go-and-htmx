@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"go-and-htmx/internal/app"
-	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,14 +11,8 @@ import (
 
 func Route(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
-
-	// Properly check HTMX header — Header.Get returns a string, compare to "true".
-	if strings.EqualFold(c.Request().Header.Get("HX-Request"), "true") {
-		// handle HX (partial) request
-	}
-
-	c.Path()
+	template := c.Get("template").(string)
 
 	// this is the base layout compiled with all components and route specific index template
-	return c.Render(200, "index", ctx)
+	return c.Render(200, template, ctx)
 }
