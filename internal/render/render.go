@@ -17,14 +17,15 @@ type Template struct {
 
 func LoadTemplates() (*Template, error) {
 	// load layouts and components into template tree
-	rootLayout := template.Must(template.ParseFiles("web/routes/layout.html"))
+	rootLayout := template.Must(template.ParseGlob("web/routes/layout.html"))
 	// rootPage := template.Must(template.ParseGlob("web/routes/index.html"))
 	// routePages := template.Must(template.ParseGlob("web/routes/*/index.html"))
 
 	// write recursive tree walker
 	// routeFragments := template.Must(template.ParseGlob("web/routes/*/!{index, layout}.html"))
 
-	components := template.Must(template.ParseGlob("web/components/*.html"))
+	componentBase := template.New("component")
+	components := template.Must(componentBase.ParseGlob("web/components/*.html"))
 
 	homeFilePath, _ := filepath.Glob("web/routes/*.html")
 	routeFilePaths, _ := filepath.Glob("web/routes/**/*.html")
@@ -56,7 +57,7 @@ func LoadTemplates() (*Template, error) {
 		// merge component template tree to page/ route tree
 		for _, ct := range components.Templates() {
 			// AddParseTree will override exsiting templates with the same name
-			if _, err := pageTmpl.AddParseTree(ct.Name(), ct.Tree); err != nil {
+			if _, err := pageTmpl.AddParseTree(strings.TrimSuffix(ct.Name(), ".html"), ct.Tree); err != nil {
 				return nil, err
 			}
 
@@ -106,13 +107,13 @@ func (t *Template) Render(w io.Writer, name string, data any, c echo.Context) er
 		return fmt.Errorf("render: templates not initialized\n")
 	}
 
-	logger.Debugf("available templates: %v\n", t.ListTemplates())
+	logger.Debugf("available templates: %v", t.ListTemplates())
 
 	tmpl, ok := t.templates[name]
-	logger.Debugf("selected template: %v\n", tmpl.Name())
+	logger.Debugf("selected template: %v", tmpl.Name())
 
-	for _, t := range tmpl.Templates() {
-		logger.Debugf("template templates: %v\n", t.Name())
+	for i, t := range tmpl.Templates() {
+		logger.Debugf("template %d: %v", i, t.Name())
 	}
 
 	if !ok || tmpl == nil {

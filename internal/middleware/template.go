@@ -26,14 +26,14 @@ func BuildTemplateName(next echo.HandlerFunc) echo.HandlerFunc {
 			if requestPath == "" {
 				template = "index"
 			} else {
-				template = requestPath
+				template = requestPath + "/index"
 			}
 		} else {
 			logger.Debug("Normal request")
 			if requestPath == "" {
 				template = "page"
 			} else {
-				template = requestPath
+				template = requestPath + "/page"
 			}
 		}
 
