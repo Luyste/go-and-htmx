@@ -1,0 +1,74 @@
+@use "../abstracts/variables" as v;
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s;
+  background-color: v.$hover-red;
+  font-size: 20px;
+
+  .list-item:hover & {
+    opacity: 1;
+    background-color: v.$hover-red;
+    pointer-events: auto;
+  }
+
+  .list-item:active & {
+    box-shadow: inset 2px 4px 0px rgba(184, 90, 78, 1);
+    background-color: v.$hover-red;
+  }
+}
+
+.list-item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  padding: 1rem;
+
+  box-shadow: 2px 4px 0px rgba(242, 132, 130, 1);
+  border: solid 2px rgba(242, 132, 130, 1);
+  border-radius: 3px;
+  padding: 0.5rem;
+  color: v.$text-color;
+  background-color: v.$primary-color;
+
+  &:hover {
+    box-shadow: 1px 2px 0px rgb(234, 82, 62);
+    border: solid 2px rgb(234, 82, 62);
+    color: v.$hover-red-text;
+  }
+
+  &:active {
+    box-shadow: none;
+    border: solid 2px rgb(234, 82, 62);
+    border-radius: 3px;
+    padding: 0.5rem;
+    color: v.$hover-red-text;
+  }
+}
+
+.item-name {
+  font-size: 20px;
+}

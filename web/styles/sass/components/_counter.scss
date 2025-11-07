@@ -1,9 +1,0 @@
-@use "../abstracts/variables" as v;
-
-.counter {
-    background-color: v.$primary-color;
-    border: 1px solid #121212;
-    width: 100px;
-    height: 100px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}

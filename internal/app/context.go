@@ -1,5 +1,10 @@
 package app
 
+type Item struct {
+	Id string
+	Item string
+}
+
 type Context struct {
-	Counter int
+	List []Item
 }

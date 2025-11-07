@@ -1,0 +1,51 @@
+@use "../abstracts/variables" as v;
+
+.button {
+  box-shadow: 2px 4px 0px v.$secondary-color;
+  border: solid 2px v.$secondary-color;
+  border-radius: 3px;
+  padding: 0.5rem;
+  color: v.$text-color;
+  background-color: v.$primary-color;
+
+  &:hover {
+    box-shadow: 1px 2px 0px v.$hover-green-secondary;
+    border: solid 2px v.$hover-green-secondary;
+    color: v.$hover-green-text;
+    background-color: v.$hover-green;
+  }
+
+  &:active {
+    box-shadow: inset 2px 4px 0px v.$hover-green-secondary;
+    border: solid 2px v.$hover-green-secondary;
+    background-color: darken(v.$hover-green, 10%);
+    border-radius: 3px;
+    padding: 0.5rem;
+    color: v.$hover-green-text;
+  }
+}
+
+.share-button {
+  box-shadow: 2px 4px 0px v.$secondary-color;
+  border: solid 2px v.$secondary-color;
+  border-radius: 3px;
+  padding: 0.5rem;
+  color: v.$text-color;
+  background-color: v.$primary-color;
+
+  &:hover {
+    box-shadow: 1px 2px 0px v.$hover-yellow-secondary;
+    border: solid 2px v.$hover-yellow-secondary;
+    color: v.$hover-yellow-text;
+    background-color: v.$hover-yellow;
+  }
+
+  &:active {
+    box-shadow: inset 2px 4px 0px v.$hover-yellow-secondary;
+    border: solid 2px v.$hover-yellow-secondary;
+    background-color: darken(v.$hover-yellow, 10%);
+    border-radius: 3px;
+    padding: 0.5rem;
+    color: v.$hover-yellow-text;
+  }
+}

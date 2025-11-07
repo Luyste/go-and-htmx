@@ -6,9 +6,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Index(c echo.Context) error {
+func Home(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-	// this is the base layout compiled with all components and route specific index template
 	return c.Render(200, "index", ctx)
+}
+
+func Back(c echo.Context) error {
+	ctx := c.Get("data").(*app.Context)
+
+	return c.Render(200, "todo", ctx)
 }

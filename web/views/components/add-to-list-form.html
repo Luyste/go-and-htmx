@@ -1,0 +1,6 @@
+{{ define "add_to_list_form" }}
+<form id="todo-form" class="add-to-list-form" hx-post="/list/add" hx-target="#todo-list-container" hx-swap="outerHTML">
+  <input id="form-item-input" type="text" name="item" class="form-input" placeholder="Add items to list" required />
+  <button type="submit" class="button" id="add-button">Add</button>
+</form>
+{{ end }}

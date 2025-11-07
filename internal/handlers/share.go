@@ -6,8 +6,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Fragment(c echo.Context) error {
+func ShareView(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-	return c.Render(200, "index", ctx)
+
+	return c.Render(200, "share", ctx)
 }
+
+func ShareForm() {}

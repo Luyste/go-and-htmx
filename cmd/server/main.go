@@ -2,10 +2,9 @@ package main
 
 import (
 	"go-and-htmx/internal/app"
+	context "go-and-htmx/internal/app"
 	"go-and-htmx/internal/handlers"
-	"go-and-htmx/internal/render"
-
-	customMiddleware "go-and-htmx/internal/middleware"
+	render "go-and-htmx/tools"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -17,10 +16,12 @@ func main() {
 	e := echo.New()
 
 	// initialize middleware
-	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}; uri=${uri}; status=${status}; error=${error}\n",
+	}))
 	e.Logger.SetLevel(log.DEBUG)
 
-	ctx := app.Context{Counter: 0}
+	ctx := app.Context{List: []context.Item{} }
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -32,37 +33,22 @@ func main() {
 	// render stylesheets
 	e.Static("/static", "web/static")
 
-	templates, err := render.LoadTemplates()
-	if err != nil {
-		e.Logger.Fatal(err)
-	}
+	e.Renderer = render.NewTemplate()
 
-	e.Renderer = templates
+	// fragments
+	e.GET("/fragments:name", handlers.Fragment)
 
 	// routes
-	home := e.Group("/")
-	blog := e.Group("/blog")
-	form := e.Group("/form")
+	e.GET("/", handlers.Home)
+	e.GET("/back", handlers.Back)
 
-	home.Use(customMiddleware.BuildTemplateName)
-	blog.Use(customMiddleware.BuildTemplateName)
-	form.Use(customMiddleware.BuildTemplateName)
+	// api
+	list := e.Group("/list")
+	list.POST("/add", handlers.AddToList)
+	list.DELETE("/remove:id", handlers.RemoveFromList)
 
-	homeFragments := home.Group("/f")
-	blogFragments := blog.Group("/f")
-	formFragments := home.Group("/f")
-
-	home.GET("", handlers.Route)
-	homeFragments.GET("", handlers.Fragment)
-
-	blog.GET("", handlers.Route)
-	blogFragments.GET("", handlers.Fragment)
-
-	form.GET("", handlers.Route)
-	formFragments.GET("", handlers.Fragment)
-
-	//
-	e.POST("/increment", handlers.Increment)
+	share := e.Group("/share")
+	share.GET("/view", handlers.ShareView)
 
 	// start server
 	e.Logger.Fatal(e.Start("localhost:42069"))
