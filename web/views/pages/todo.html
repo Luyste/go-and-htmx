@@ -1,0 +1,31 @@
+{{ define "todo" }}
+<div id="main-container" class="main-container">
+    <h1>HTMX TODO LIST</h1>
+    <div class="add-to-list-form-container">
+        {{ template "add_to_list_form" . }}
+    </div>
+    <div id="todo-list-container" class="list-container">
+        {{ template "todo_list" . }}
+    </div>
+    {{ if eq (len .List) 0 }}
+    <div id="separator"></div>
+    <div id="share-button"></div>
+    {{ else }}
+    <div class="separator" id="separator">
+        <div class="separator-square"></div>
+        <div class="separator-square"></div>
+        <div class="separator-square"></div>
+    </div>
+
+    <button
+        class="share-button"
+        id="share-button"
+        hx-get="/share/view"
+        hx-swap="innerHTML"
+        hx-target="#main"
+    >
+        SHARE
+    </button>
+    {{ end }}
+</div>
+{{ end }}

@@ -1,26 +1,55 @@
 @use "../abstracts/variables" as v;
 
 .add-to-list-form-container {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: space-between;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .add-to-list-form {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    gap: 0.25rem;
+    padding-bottom: 0.5rem;
 }
 
 .form-input {
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem 0.25rem 0.5rem;
-  border: 2px solid rgba(242, 132, 130, 1);
-  background-color: darken(v.$primary-color, 2%);
-  color: v.$text-color;
-  box-shadow: inset 2px 4px 0px rgba(242, 132, 130, 1);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem 0.25rem 0.5rem;
+    border: 2px solid rgba(242, 132, 130, 1);
+    background-color: darken(v.$primary-color, 2%);
+    color: v.$text-color;
+    box-shadow: inset 2px 4px 0px rgba(242, 132, 130, 1);
+    width: 100%;
+    height: 100%;
+}
+
+.share-form-container {
+    width: 100%;
+}
+
+.share-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    gap: 0.5rem;
+
+    button {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+.share-form-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    gap: 0.25rem;
 }

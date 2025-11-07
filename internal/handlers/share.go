@@ -9,8 +9,11 @@ import (
 func ShareView(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-
 	return c.Render(200, "share", ctx)
 }
 
-func ShareForm() {}
+func ShareSubmit(c echo.Context) error {
+	ctx := c.Get("data").(*app.Context)
+
+	return c.Render(200, "share", ctx)
+}

@@ -15,5 +15,7 @@ func Home(c echo.Context) error {
 func Back(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
+	c.Logger().Debugf("request context: %v", ctx)
+
 	return c.Render(200, "todo", ctx)
 }

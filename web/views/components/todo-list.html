@@ -1,54 +1,98 @@
+<!-- todo_list -->
 {{ define "todo_list" }}
 <div id="todo-list-container" class="list-container">
-  {{ if .List }}
-  {{ range .List }}
-  <div class="list-item" hx-delete="/list/remove:{{ .Id }}" hx-include="#{{ .Id }}" hx-target="#todo-list-container"
-    hx-swap="outerHTML">
-    <div id="delete-list-item" class="hover-overlay">Delete?</div>
-    <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
-  </div>
-  {{ end }}
-  {{ else }}
-  <p>No items in your list yet :(</p>
-  {{ end }}
+    {{ if .List }} {{ range .List }}
+    <div
+        class="list-item"
+        hx-delete="/list/remove:{{ .Id }}"
+        hx-include="#{{ .Id }}"
+        hx-target="#todo-list-container"
+        hx-swap="outerHTML"
+    >
+        <div id="delete-list-item" class="hover-overlay">DELETE?</div>
+        <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
+    </div>
+    {{ end }} {{ else }}
+    <p>No items in your list yet :(</p>
+    {{ end }}
 </div>
 {{ end }}
 
+<!-- todo_list_reset_input_field -->
 {{ define "todo_list_reset_input_field" }}
 <div id="todo-list-container" class="list-container">
-  {{ if .List }}
-  {{ range .List }}
-  <div class="list-item" hx-delete="/list/remove:{{ .Id }}" hx-include="#{{ .Id }}" hx-target="#todo-list-container"
-    hx-swap="outerHTML">
-    <div id="delete-list-item" class="hover-overlay">Delete?</div>
-    <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
-  </div>
-  {{ end }}
-  {{ else }}
-  <p>No items in your list yet :(</p>
-  {{ end }}
+    {{ if .List }} {{ range .List }}
+    <div
+        class="list-item"
+        hx-delete="/list/remove:{{ .Id }}"
+        hx-include="#{{ .Id }}"
+        hx-target="#todo-list-container"
+        hx-swap="outerHTML"
+    >
+        <div id="delete-list-item" class="hover-overlay">DELETE?</div>
+        <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
+    </div>
+    {{ end }} {{ else }}
+    <p>No items in your list yet :(</p>
+    {{ end }}
 </div>
 
-<input id="form-item-input" type="text" name="item" class="form-input" placeholder="Add items to list" required
-  hx-swap-oob="true" />
+<input
+    id="form-item-input"
+    type="text"
+    name="item"
+    class="form-input"
+    placeholder="Add items to list"
+    required
+    hx-swap-oob="true"
+/>
+
+<div id="separator" hx-swap-oob="true"></div>
 
 <div id="share-button" hx-swap-oob="true"></div>
 {{ end }}
 
+<!-- todo_list_reset_input_field_share_button -->
 {{ define "todo_list_reset_input_field_share_button" }}
 <div id="todo-list-container" class="list-container">
-  {{ range .List }}
-  <div class="list-item" hx-delete="/list/remove:{{ .Id }}" hx-include="#{{ .Id }}" hx-target="#todo-list-container"
-    hx-swap="outerHTML">
-    <div id="delete-list-item" class="hover-overlay">Delete?</div>
-    <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
-  </div>
-  {{ end }}
+    {{ range .List }}
+    <div
+        class="list-item"
+        hx-delete="/list/remove:{{ .Id }}"
+        hx-include="#{{ .Id }}"
+        hx-target="#todo-list-container"
+        hx-swap="outerHTML"
+    >
+        <div id="delete-list-item" class="hover-overlay">DELETE?</div>
+        <span id="{{ .Id }}" class="item-name">{{ .Item }}</span>
+    </div>
+    {{ end }}
 </div>
 
-<input id="form-item-input" type="text" name="item" class="form-input" placeholder="Add items to list" required
-  hx-swap-oob="true" />
+<input
+    id="form-item-input"
+    type="text"
+    name="item"
+    class="form-input"
+    placeholder="Add items to list"
+    required
+    hx-swap-oob="true"
+/>
 
-<button class="share-button" hx-swap-oob="true" id="share-button" hx-get="/share/view" hx-swap="innerHTML"
-  hx-push-url="/share" hx-target="#main">Share</button>
+<div class="separator" id="separator" hx-swap-oob="true" hx-swap="outerHTML">
+    <div class="separator-square"></div>
+    <div class="separator-square"></div>
+    <div class="separator-square"></div>
+</div>
+
+<button
+    class="share-button"
+    hx-swap-oob="true"
+    id="share-button"
+    hx-get="/share/view"
+    hx-swap="innerHTML"
+    hx-target="#main"
+>
+    SHARE
+</button>
 {{ end }}

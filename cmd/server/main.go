@@ -21,7 +21,7 @@ func main() {
 	}))
 	e.Logger.SetLevel(log.DEBUG)
 
-	ctx := app.Context{List: []context.Item{} }
+	ctx := app.Context{List: []context.Item{}}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -49,6 +49,7 @@ func main() {
 
 	share := e.Group("/share")
 	share.GET("/view", handlers.ShareView)
+	share.POST("/submit", handlers.ShareSubmit)
 
 	// start server
 	e.Logger.Fatal(e.Start("localhost:42069"))

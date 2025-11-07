@@ -1,22 +1,24 @@
+@use "sass:color";
+
 $primary-color: rgba(245, 202, 195, 1);
 $secondary-color: rgba(242, 132, 130, 1);
 
 $text-color: $secondary-color;
 $hover-green: rgba(132, 165, 157, 1);
-$hover-green-text: darken($hover-green, 20%);
+$hover-green-text: color.adjust($hover-green, $lightness: -20%);
 $hover-green-secondary: rgba(77, 104, 98, 1);
 
 $highlight-color: rgba(246, 189, 96, 1);
-$hover-yellow: darken($highlight-color, 10%);
-$hover-yellow-text: darken($highlight-color, 40%);
-$hover-yellow-secondary: darken($highlight-color, 25%);
+$hover-yellow: color.adjust($highlight-color, $lightness: -10%);
+$hover-yellow-text: color.adjust($highlight-color, $lightness: -40%);
+$hover-yellow-secondary: color.adjust($highlight-color, $lightness: -25%);
 
 $background-dark: rgba(47, 62, 70, 1);
 $background-darker: rgba(28, 37, 43, 1);
 
-$hover-red: darken($primary-color, 10%);
-$hover-red-text: darken($hover-red, 20%);
-$hover-red-secondary: darken($hover-red, 15%);
+$hover-red: color.adjust($primary-color, $lightness: -10%);
+$hover-red-text: color.adjust($hover-red, $lightness: -20%);
+$hover-red-secondary: color.adjust($hover-red, $lightness: -15%);
 
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;

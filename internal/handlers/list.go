@@ -37,7 +37,9 @@ func RemoveFromList(c echo.Context) error {
 		}
 	}
 
-	ctx.List = newList  
+	ctx.List = newList
+
+	c.Logger().Debugf("List len: %v", len(ctx.List))
 
 	if len(ctx.List) == 0 {
 		return c.Render(200, "todo_list_reset_input_field", ctx)

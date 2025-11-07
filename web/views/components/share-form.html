@@ -1,3 +1,35 @@
 {{ define "share_form" }}
-<div>share form :)</div>
+<form
+    id="share-form"
+    class="share-form"
+    hx-post="/share/submit"
+    hx-target="#todo-list-container"
+    hx-swap="outerHTML"
+>
+    <div class="share-form-input-wrapper">
+        <label for="name">Name</label>
+        <input
+            id="name"
+            type="text"
+            name=""
+            class="form-input"
+            placeholder="John Doe"
+            required
+        />
+    </div>
+    <div class="share-form-input-wrapper">
+        <label for="email">Email</label>
+        <input
+            id="email"
+            type="email"
+            name=""
+            class="form-input"
+            placeholder="john@example.com"
+            required
+        />
+    </div>
+    <button type="submit" class="share-button" id="submit-form-button">
+        SHARE
+    </button>
+</form>
 {{ end }}
