@@ -51,6 +51,10 @@ func main() {
 	share.GET("/view", handlers.ShareView)
 	share.POST("/submit", handlers.ShareSubmit)
 
+	validate := e.Group("/validate")
+	validate.POST("/name", handlers.ValidateName)
+	validate.POST("/email", handlers.ValidateEmail)
+
 	// start server
 	e.Logger.Fatal(e.Start("localhost:42069"))
 }

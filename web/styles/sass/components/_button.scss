@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as v;
+@use "sass:color";
 
 .add-button {
     box-shadow: 2px 4px 0px v.$secondary-color;
@@ -18,7 +19,7 @@
     &:active {
         box-shadow: inset 2px 4px 0px v.$hover-green-secondary;
         border: solid 2px v.$hover-green-secondary;
-        background-color: darken(v.$hover-green, 10%);
+        background-color: color.adjust(v.$hover-green, $lightness: -10%);
         border-radius: 3px;
         padding: 0.5rem;
         color: v.$hover-green-text;
@@ -43,7 +44,7 @@
     &:active {
         box-shadow: inset 2px 4px 0px v.$hover-yellow-secondary;
         border: solid 2px v.$hover-yellow-secondary;
-        background-color: darken(v.$hover-yellow, 10%);
+        background-color: color.adjust(v.$hover-yellow, $lightness: -10%);
         border-radius: 3px;
         padding: 0.5rem;
         color: v.$hover-yellow-text;
@@ -68,7 +69,7 @@
     &:active {
         box-shadow: inset 2px 4px 0px v.$secondary-color;
         border: solid 2px v.$secondary-color;
-        background-color: darken(v.$primary-color, 10%);
+        background-color: color.adjust(v.$primary-color, $lightness: -10%);
         border-radius: 3px;
         padding: 0.5rem;
         color: v.$primary-color;

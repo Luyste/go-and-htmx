@@ -4,6 +4,7 @@
 @use "components/main";
 @use "components/list";
 @use "components/button";
+@use "abstracts/variables" as v;
 
 @font-face {
   font-family: "Jersey20";
@@ -25,4 +26,6 @@ button {
   font-size: 16px;
   padding: 0;
   margin: 0;
+  min-height: 100%;
+  background-color: v.$background-dark;
 }

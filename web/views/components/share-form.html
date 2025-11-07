@@ -3,33 +3,119 @@
     id="share-form"
     class="share-form"
     hx-post="/share/submit"
-    hx-target="#todo-list-container"
-    hx-swap="outerHTML"
 >
     <div class="share-form-input-wrapper">
         <label for="name">Name</label>
-        <input
-            id="name"
-            type="text"
-            name=""
-            class="form-input"
-            placeholder="John Doe"
-            required
-        />
+        <div id="name-input-validation-wrapper">
+            <input
+                id="input-name"
+                type="text"
+                name="name"
+                class="form-input"
+                hx-post="/validate/name"
+                hx-swap="outerHTML"
+                hx-target="#name-input-validation-wrapper"
+                hx-trigger="keyup changed delay:500ms"
+                placeholder="John Doe"
+            />
+            <p id="name-error-message" class="input-error-message">{{ .Validation.NameError }}</p>
+        </div>
     </div>
     <div class="share-form-input-wrapper">
         <label for="email">Email</label>
-        <input
-            id="email"
-            type="email"
-            name=""
-            class="form-input"
-            placeholder="john@example.com"
-            required
-        />
+        <div id="email-input-validation-wrapper">
+            <input
+                id="input-email"
+                type="text"
+                name="email"
+                class="form-input"
+                hx-post="/validate/email"
+                hx-target="#email-input-validation-wrapper"
+                hx-trigger="keyup changed delay:500ms"
+                hx-swap="outerHTML"
+                placeholder="john@example.com"
+            />
+            <p id="email-error-message" class="input-error-message">{{ .Validation.EmailError}} </p>
+        </div>
     </div>
     <button type="submit" class="share-button" id="submit-form-button">
         SHARE
     </button>
 </form>
 {{ end }}
+
+<!-- Swaps -->
+
+{{ define "name_validation" }}
+        {{ if .Validation.NameError }}
+        <div id="name-input-validation-wrapper">
+            <input
+                id="input-name"
+                type="text"
+                name="name"
+                class="form-input-error"
+                hx-post="/validate/name"
+                hx-target="#name-input-validation-wrapper"
+                hx-swap="outerHTML"
+                hx-trigger="keyup changed delay:500ms"
+                placeholder="John Doe"
+                value="{{ .Validation.NameInput }}"
+            />
+            <p id="name-error-message" class="input-error-message">
+                {{ .Validation.NameError }}
+            </p>
+        </div>
+        {{ else }}
+        <div id="name-input-validation-wrapper">
+            <input 
+                id="input-name"
+                type="text"
+                name="name"
+                class="form-input"
+                hx-post="/validate/name"
+                hx-target="#name-input-validation-wrapper"
+                hx-trigger="keyup changed delay:500ms"
+                hx-swap="outerHTML"
+                placeholder="John Doe"
+                value="{{ .Validation.NameInput }}"
+            />
+        </div>
+        {{ end }}
+{{ end }}
+
+{{ define "email_validation" }}
+        {{ if .Validation.EmailError }}
+        <div id="email-input-validation-wrapper">
+            <input
+                id="input-email"
+                type="text"
+                name="email"
+                class="form-input-error"
+                hx-post="/validate/email"
+                hx-target="#email-input-validation-wrapper"
+                hx-trigger="keyup changed delay:500ms"
+                hx-swap="outerHTML"
+                placeholder="John@gmail.com"
+                value="{{ .Validation.EmailInput }}"
+            />
+            <p id="email-error-message" class="input-error-message">
+                {{ .Validation.EmailError }}
+            </p>
+        </div>
+        {{ else }}
+        <div id="email-input-validation-wrapper">
+            <input
+                id="input-email"
+                type="text"
+                name="email"
+                class="form-input"
+                hx-post="/validate/email"
+                hx-target="#email-input-validation-wrapper"
+                hx-swap="outerHTML"
+                hx-trigger="keyup changed delay:500ms"
+                placeholder="John@gmail.com"
+                value="{{ .Validation.EmailInput }}"
+            />
+        </div>
+        {{ end }}
+{{end}}
