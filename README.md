@@ -62,3 +62,77 @@ For example:
 - Fragments, which are because of the convention coupled to the page route, are stored as: `blog/{fragmentName}`.
 
 When we navigate via a hx-swap or get request, we only need to render a certain fragment.
+
+# Timed animations
+
+Let's update the form to use class-tools:
+
+```/dev/null/add-to-list-form.html#L1-18
+{{ define "add_to_list_form" }}
+<form
+    id="todo-form"
+    class="add-to-list-form"
+    hx-post="/list/add"
+    hx-target="#todo-list-container"
+    hx-swap="outerHTML"
+>
+    <input
+        id="form-item-input"
+        type="text"
+        name="item"
+        class="form-input"
+        placeholder="Add items to list"
+        required
+        classes-add="success-input delay:0"
+        classes-remove="success-input delay:1000"
+    />
+    <button type="submit" class="add-button" id="add-button">ADD</button>
+</form>
+{{ end }}
+```
+
+3. Add the new styles to your CSS. I notice you're using SASS/SCSS (because of the source map comment). Let's add these new styles:
+
+```/dev/null/new-styles.css#L1-12
+.form-input {
+    /* ... your existing styles ... */
+    transition: all 0.3s ease;  /* Add this for smooth transitions */
+}
+
+.success-input {
+    border: 2px solid #4d6862 !important;
+    background-color: #84a59d !important;
+    color: rgb(82.39, 112.61, 105.28) !important;
+    box-shadow: inset 2px 4px 0px #4d6862 !important;
+    transform: scale(1.02);
+}
+```
+
+Here's how it works:
+
+1. When the form is submitted successfully:
+   - The `success-input` class is immediately added (`delay:0`)
+   - The input will change to the success state colors
+   - After 1000ms (1 second), the class is automatically removed (`delay:1000`)
+   - The input smoothly transitions back to its original state
+
+The transition works like this:
+
+- When you add an item: Normal state → Success state (immediate)
+- 1 second pause
+- Success state → Normal state (smooth transition)
+
+No JavaScript is required! It's all handled by:
+
+- HTMX class-tools extension for the class swapping
+- CSS transitions for the smooth animations
+
+The benefits of this approach:
+
+1. Zero JavaScript
+2. Declarative in the HTML
+3. Smooth transitions handled by CSS
+4. Follows HTMX's HTML-first philosophy
+5. Automatically reverts after the specified delay
+
+Would you like me to help you implement this in your codebase or would you like to see any modifications to the colors/timing?

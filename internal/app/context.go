@@ -10,6 +10,7 @@ type Validation struct {
 	NameInput  string
 	EmailError string
 	EmailInput string
+	Success    bool
 }
 
 type Context struct {

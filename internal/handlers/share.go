@@ -9,10 +9,13 @@ import (
 func ShareView(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-	ctx.Validation.NameError = ""
-	ctx.Validation.NameInput = ""
-	ctx.Validation.EmailError = ""
-	ctx.Validation.EmailInput = ""
+	ctx.Validation = app.Validation{
+		NameError:  "",
+		NameInput:  "",
+		EmailError: "",
+		EmailInput: "",
+		Success:    false,
+	}
 
 	return c.Render(200, "share", ctx)
 }
@@ -20,7 +23,13 @@ func ShareView(c echo.Context) error {
 func ShareSubmit(c echo.Context) error {
 	ctx := c.Get("data").(*app.Context)
 
-	c.Logger().Debugf("request context: %+v", ctx)
+	ctx.Validation = app.Validation{
+		NameError:  "",
+		NameInput:  "",
+		EmailError: "",
+		EmailInput: "",
+		Success:    true,
+	}
 
 	return c.Render(200, "share", ctx)
 }
